@@ -5,6 +5,7 @@ from flask_cors import CORS
 from db.db import db
 from dotenv import load_dotenv
 from flask_migrate import Migrate
+from flask_swagger_ui import get_swaggerui_blueprint
 
 load_dotenv()
 
@@ -24,6 +25,16 @@ else:
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
+SWAGGER_URL = '/swagger'
+API_URL = '/static/swagger.json'
+SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': "init.io"
+    }
+)
+app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
 
 # PING ENDPOINTS
 app.register_blueprint(controllers.ping_controller.api) 
@@ -33,6 +44,7 @@ app.register_blueprint(controllers.authorization_controller.api)
 app.register_blueprint(controllers.user_controller.api)
 
 db.init_app(app)
+
 migrate = Migrate(app, db)
 
 CORS(app)

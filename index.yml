@@ -1,0 +1,25 @@
+openapi: 3.0.0
+info:
+  title: init.io API
+  description: init.io endpoints and usage description.
+  version: '1.0'
+servers:
+  - url: http://localhost:3000/api/v1.0
+    description: Local Server
+  - url: https://dev-init-api.herokuapp.com/api/v1.0/
+    description: UAT Server
+paths:
+  /ping:
+    get:
+      tags:
+      - "Ping"
+      summary: "Check status of service"
+      description: "Can be used for heathchecks."
+      responses:
+        '200':   
+          description: Replies with Pong
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: pong

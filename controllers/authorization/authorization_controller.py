@@ -61,7 +61,7 @@ def register():
 
 @api.route('/verify', methods=['POST'])
 def verify():
-
+    
     try:
         print(request)
         is_valid_json(request)

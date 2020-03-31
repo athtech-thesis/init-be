@@ -3,6 +3,7 @@ from flask import Blueprint, request
 from errors.authorization_errors.authorization_error import MissingData, UserNotFound
 from errors.init_error_handler import create_api_error_response
 from services.user import user_service
+from flasgger import swag_from
 
 api = Blueprint('user_controller', __name__, url_prefix='/api/v1.0/user')
 
@@ -22,8 +23,4 @@ def get_user(user_id):
         return create_api_error_response(e.status, e.message)
 
     return user_service.convert_user_to_json_response(user_to_retrieve)
-
-
-@api.route('/user')
-def rr():
-    return 'hello'
+    
