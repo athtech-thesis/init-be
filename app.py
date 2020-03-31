@@ -1,7 +1,6 @@
 import os 
 from flask import Flask, url_for, jsonify
-from controllers.authorization import authorization_controller
-from controllers.user import user_controller
+import controllers
 from flask_cors import CORS
 from db.db import db
 from dotenv import load_dotenv
@@ -25,10 +24,13 @@ else:
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
+
+# PING ENDPOINTS
+app.register_blueprint(controllers.ping_controller.api) 
 # AUTHORIZATION ENDPOINTS
-app.register_blueprint(authorization_controller.api)
+app.register_blueprint(controllers.authorization_controller.api)
 #  USER ENDPOINTS
-app.register_blueprint(user_controller.api)
+app.register_blueprint(controllers.user_controller.api)
 
 db.init_app(app)
 migrate = Migrate(app, db)
