@@ -63,6 +63,10 @@
 
     "/users/{userId}": {
             "get": {
+                
+                    "tags": [
+                      "User"
+                    ],
               "summary": "Get a user by ID",
               "parameters": [
                 {
