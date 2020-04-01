@@ -23,3 +23,7 @@ def get_user(user_id):
         return create_api_error_response(e.status, e.message)
 
     return user_service.convert_user_to_json_response(user_to_retrieve)
+
+@api.route('/<user_id>/consent', methods=['POST']) 
+def consent():
+    pass 
