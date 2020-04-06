@@ -1,5 +1,5 @@
 from flask import jsonify, request, Blueprint
-from errors.authorization_errors.authorization_error import FormattingError, MissingData, UserAlreadyExists
+from errors.authorization_errors.authorization_error import FormattingError, MissingData, UserAlreadyExists, InitValidationError
 from errors.init_error_handler import create_api_error_response
 from models.user import User
 from services.user import user_service
@@ -26,11 +26,12 @@ def login():
 
     email = json_request['email']
     password = json_request['password']
-    try:
-        return jsonify(user_service.login_user(email, password)), 200
+    #try:
+    return jsonify(user_service.login_user(email, password)), 200
     # Catching all exceptions from server or framework
-    except BaseException as e:
-        return create_api_error_response(status_code=e.status, message=e.message)
+    # except BaseException as e:
+        
+    #     return create_api_error_response(status_code=500, message=str(e))
 
 
 @api.route('/register', methods=['POST'])
@@ -56,7 +57,7 @@ def register():
 
     try:
         return jsonify(user_service.register_user(user_to_register)), 200
-    except UserAlreadyExists as e:
+    except UserAlreadyExists or InitValidationError as e:
         return create_api_error_response(status_code=500, message=e.message)
 
 @api.route('/verify', methods=['POST'])
@@ -79,7 +80,9 @@ def verify():
     token = json_request['token']
 
     try:
-        return jsonify(user_service.verify_user(user_id, token))
+        asd = jsonify(user_service.verify_user(user_id, token))
+        print(asd)
+        return asd
     except Exception as e:
         return create_api_error_response(status_code=500, message=str(e))
 

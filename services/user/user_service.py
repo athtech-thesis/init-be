@@ -1,4 +1,5 @@
 from flask import jsonify
+import os
 from services.email.email_service import send_verification_email
 from services.token.token_service import generate_token, token_is_valid
 
@@ -16,14 +17,15 @@ load_dotenv()
 
 def login_user(email, password):
     try:
-        user = User.query(email=email)
+        user = User.query.filter_by(email=email).first()
+        print(user)
     except Exception:
         raise UserNotFound("email", email)
 
     if not compare_passwords(password, user.password):
         raise WrongCredentials
 
-    return create_token(user.id, user.isVerified)
+    return create_token(user.id, user.is_verified)
 
 
 def register_user(user):
@@ -32,16 +34,15 @@ def register_user(user):
 
     try:
         user.password = get_hashed_password(user.password)
-        # new_user = user.save()
-        print(user)
         db.session.add(user)
         db.session.commit()
         verification_token = generate_token(user)
         send_verification_email(user.name, user.email, verification_token.token)
     except Exception or ValidationError as e:
+        print(str(e))
         raise InitValidationError(str(e))
 
-    return create_token(user.id, user.isVerified)
+    return create_token(user.id, user.is_verified)
 
 
 def verify_user(user_id, token):
@@ -83,10 +84,10 @@ def create_token(user_id, user_verified):
         payload = {'id': str(user_id), 'is_verified': user_verified}
         return {'token': jwt.encode(
             payload,
-            JWT_KEY,
-            JWT_ALGORITHM
+            os.getenv("JWT_KEY"),
+            os.getenv("JWT_ALGORITHM")          
         ).decode('UTF-8')}
-    except Exception:
+    except Exception as e:
         raise Exception
 
 

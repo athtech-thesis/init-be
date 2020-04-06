@@ -10,6 +10,7 @@ class User(Base):
     surname=db.Column(db.String(25))
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String())
+    is_verified = db.Column(db.Boolean(), default=True)
 
     def __init__(self, name, surname, email, password):
         self.name = name

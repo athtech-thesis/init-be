@@ -3,12 +3,17 @@ import uuid
 
 from errors.authorization_errors.authorization_error import TokenNotFound, TokenHasExpired, MoreThanOneTokensFound
 from models.token import Token
+from dotenv import load_dotenv
+from db.db import db
 
+load_dotenv()
 
 def generate_token(user):
-    token = VerificationToken(user.id, generate_verification_token())
+    token = Token(user_id= user.id, token=generate_verification_token())
     try:
-        return token.save()
+        db.session.add(token)
+        db.session.commit()
+        return token
     except Exception:
         raise Exception
 

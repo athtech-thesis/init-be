@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 from models.base import Base
 from db.db import db
 
@@ -16,5 +16,5 @@ class Token(Base):
 
     def __init__(self, token, user_id):
         self.token = token
-        self.expiring = datetime.now() + datetime.timedelta(days=1)
+        self.expiring = datetime.datetime.now() + datetime.timedelta(days=1)
         self.user_id = user_id
