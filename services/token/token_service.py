@@ -24,6 +24,7 @@ def generate_verification_token():
 
 def token_is_valid(user_id, token):
     try:
+        # FIXME
         tokens_from_db = VerificationToken.objects(user=user_id, token=token)
         user_has_one_token(tokens_from_db)
         token_to_check = tokens_from_db[0]

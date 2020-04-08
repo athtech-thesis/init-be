@@ -12,7 +12,7 @@
        },
        {
           "url":"https://dev-init-api.herokuapp.com/api/v1.0/",
-          "description":"UAT Server"
+          "description":"UAT/DEV Server"
        }
     ],
     "paths":{
